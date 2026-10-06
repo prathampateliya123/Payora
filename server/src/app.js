@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import notFound from './middleware/notFound.js';
 import errorHandler from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.routes.js';
+import planRoutes from './routes/plan.routes.js';
+import subscriptionRoutes from './routes/subscription.routes.js';
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/plans', planRoutes);
+app.use('/api/subscriptions', subscriptionRoutes);
 
 // Health Check Route
 app.get('/api/health', (req, res) => {

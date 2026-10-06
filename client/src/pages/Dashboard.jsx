@@ -68,16 +68,19 @@ export const Dashboard = () => {
 
         {/* Future Subscription Section */}
         <div className="mt-8 bg-white shadow rounded-lg overflow-hidden">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">
-              Subscription
-            </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">
-              Manage your billing and plans.
-            </p>
-          </div>
-          <div className="border-t border-gray-200 px-4 py-12 text-center">
-            <h2 className="text-gray-400 text-lg">Subscription features coming soon...</h2>
+          <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+            <div>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Subscription
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                Manage your billing and plans.
+              </p>
+            </div>
+            <div>
+              <a href="/pricing" className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700">View Plans</a>
+              <a href="/subscription" className="ml-3 text-blue-600 border border-blue-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-50">My Subscription</a>
+            </div>
           </div>
         </div>
       </main>
