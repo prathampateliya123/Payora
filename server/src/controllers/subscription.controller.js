@@ -77,7 +77,14 @@ export const getMySubscription = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      data: subscription
+      data: {
+        plan: subscription.plan?.name || 'Unknown',
+        billingCycle: subscription.billingCycle,
+        status: subscription.status,
+        amount: subscription.amount,
+        currency: subscription.currency,
+        nextBillingAt: subscription.nextBillingAt || subscription.endAt || null
+      }
     });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error', errors: [error.message] });

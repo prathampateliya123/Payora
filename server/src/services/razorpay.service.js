@@ -31,3 +31,19 @@ export const createSubscription = async ({ planId, totalCount = 12 }) => {
   const subscription = await rzp.subscriptions.create(subPayload);
   return subscription;
 };
+
+export const cancelSubscription = async (subscriptionId, cancelAtCycleEnd = true) => {
+  const rzp = getRazorpay();
+  const subscription = await rzp.subscriptions.cancel(subscriptionId, cancelAtCycleEnd);
+  return subscription;
+};
+
+export const updateSubscription = async (subscriptionId, { planId }) => {
+  const rzp = getRazorpay();
+  const payload = {
+    plan_id: planId,
+    customer_notify: 1
+  };
+  const subscription = await rzp.subscriptions.update(subscriptionId, payload);
+  return subscription;
+};

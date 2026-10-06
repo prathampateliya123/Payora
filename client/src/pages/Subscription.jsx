@@ -72,13 +72,21 @@ export const Subscription = () => {
                 <dt className="text-sm font-medium text-gray-500">Status</dt>
                 <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    subscription.status === 'active' ? 'bg-green-100 text-green-800' :
-                    subscription.status === 'created' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
+                    subscription.status === 'active' || subscription.status === 'completed' ? 'bg-green-100 text-green-800' :
+                    subscription.status === 'created' || subscription.status === 'authenticated' ? 'bg-blue-100 text-blue-800' :
+                    subscription.status === 'pending' || subscription.status === 'halted' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-red-100 text-red-800'
                   }`}>
-                    {subscription.status}
+                    {subscription.status === 'created' ? 'Subscription Created' :
+                     subscription.status === 'authenticated' ? 'Payment Authenticated' :
+                     subscription.status === 'active' ? 'Active Subscription' :
+                     subscription.status === 'pending' ? 'Payment Pending' :
+                     subscription.status === 'halted' ? 'Payment Issue' :
+                     subscription.status === 'cancelled' ? 'Subscription Cancelled' :
+                     subscription.status === 'completed' ? 'Subscription Completed' :
+                     subscription.status}
                   </span>
-                  {subscription.status === 'created' && (
+                  {(subscription.status === 'created' || subscription.status === 'authenticated') && (
                     <p className="mt-2 text-xs text-gray-500 font-normal">
                       Note: If you just paid, the status will update to 'active' shortly once the webhook is processed.
                     </p>

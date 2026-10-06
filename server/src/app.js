@@ -7,8 +7,16 @@ import errorHandler from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.routes.js';
 import planRoutes from './routes/plan.routes.js';
 import subscriptionRoutes from './routes/subscription.routes.js';
+import webhookRoutes from './routes/webhook.routes.js';
 
 const app = express();
+
+// Trust reverse proxies like ngrok
+app.set('trust proxy', 1);
+
+// Webhook Route needs RAW body for signature verification
+// Must be registered BEFORE express.json()
+app.use('/api/webhooks', express.raw({ type: 'application/json' }), webhookRoutes);
 
 // Middleware
 app.use(express.json());

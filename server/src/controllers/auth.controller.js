@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+
 import * as authService from '../services/auth.service.js';
-import { AuthenticatedRequest } from '../types/auth.types.js';
+
 
 export const register = async (req, res) => {
   try {
