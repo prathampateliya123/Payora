@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import notFound from './middleware/notFound';
-import errorHandler from './middleware/errorHandler';
-import authRoutes from './routes/auth.routes';
+import notFound from './middleware/notFound.js';
+import errorHandler from './middleware/errorHandler.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use('/api/auth', authRoutes);
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
-    message: 'PayFlow API is running',
+    message: 'PayFlow API is running'
   });
 });
 

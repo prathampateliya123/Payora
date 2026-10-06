@@ -13,7 +13,7 @@ export const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
@@ -32,7 +32,7 @@ export const Register = () => {
     try {
       await register({ name, email, password });
       navigate('/login');
-    } catch (err: any) {
+    } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || 'Registration failed');
       } else {
@@ -51,11 +51,11 @@ export const Register = () => {
           <p className="text-gray-500 mt-2">Create a new account</p>
         </div>
 
-        {error && (
-          <div className="bg-red-50 text-red-500 p-3 rounded-md mb-6 text-sm text-center">
+        {error &&
+        <div className="bg-red-50 text-red-500 p-3 rounded-md mb-6 text-sm text-center">
             {error}
           </div>
-        )}
+        }
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -65,8 +65,8 @@ export const Register = () => {
               required
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+              onChange={(e) => setName(e.target.value)} />
+            
           </div>
 
           <div>
@@ -76,8 +76,8 @@ export const Register = () => {
               required
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+              onChange={(e) => setEmail(e.target.value)} />
+            
           </div>
 
           <div>
@@ -87,8 +87,8 @@ export const Register = () => {
               required
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+              onChange={(e) => setPassword(e.target.value)} />
+            
           </div>
 
           <div>
@@ -98,15 +98,15 @@ export const Register = () => {
               required
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
+              onChange={(e) => setConfirmPassword(e.target.value)} />
+            
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-          >
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
+            
             {loading ? 'Registering...' : 'Register'}
           </button>
         </form>
@@ -118,6 +118,6 @@ export const Register = () => {
           </Link>
         </p>
       </div>
-    </div>
-  );
+    </div>);
+
 };

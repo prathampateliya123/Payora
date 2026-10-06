@@ -16,8 +16,8 @@ export const Dashboard = () => {
             <div className="flex items-center">
               <button
                 onClick={logout}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition"
-              >
+                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition">
+                
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </button>
@@ -81,6 +81,6 @@ export const Dashboard = () => {
           </div>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };

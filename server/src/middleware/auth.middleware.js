@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import User from '../models/User';
-import { JwtPayload, AuthenticatedRequest } from '../types/auth.types';
+import User from '../models/User.js';
+import { JwtPayload, AuthenticatedRequest } from '../types/auth.types.js';
 
-export const protect = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const protect = async (req, res, next) => {
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -16,7 +16,7 @@ export const protect = async (req: AuthenticatedRequest, res: Response, next: Ne
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await User.findById(decoded.id);
 
@@ -34,7 +34,7 @@ export const protect = async (req: AuthenticatedRequest, res: Response, next: Ne
       id: user._id.toString(),
       role: user.role,
       email: user.email,
-      name: user.name,
+      name: user.name
     };
     next();
   } catch (error) {

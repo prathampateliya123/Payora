@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
-import User from '../models/User';
-import { generateToken } from '../utils/jwt';
+import User from '../models/User.js';
+import { generateToken } from '../utils/jwt.js';
 
-export const registerUser = async (data: any) => {
+export const registerUser = async (data) => {
   const { name, email, password } = data;
 
   if (!name || !email || !password) {
@@ -20,7 +20,7 @@ export const registerUser = async (data: any) => {
   const user = await User.create({
     name,
     email,
-    password: hashedPassword,
+    password: hashedPassword
   });
 
   const token = generateToken(user._id, user.role);
@@ -31,13 +31,13 @@ export const registerUser = async (data: any) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      isActive: user.isActive,
+      isActive: user.isActive
     },
-    token,
+    token
   };
 };
 
-export const loginUser = async (data: any) => {
+export const loginUser = async (data) => {
   const { email, password } = data;
 
   if (!email || !password) {
@@ -66,8 +66,8 @@ export const loginUser = async (data: any) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      isActive: user.isActive,
+      isActive: user.isActive
     },
-    token,
+    token
   };
 };

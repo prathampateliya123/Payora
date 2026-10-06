@@ -2,21 +2,21 @@ import { createContext, useState, useEffect, ReactNode } from 'react';
 import api from '../services/api';
 import { User, AuthResponse } from '../types/auth';
 
-interface AuthContextType {
-  currentUser: User | null;
-  isAuthenticated: boolean;
-  loading: boolean;
-  login: (data: any) => Promise<void>;
-  register: (data: any) => Promise<void>;
-  logout: () => void;
-}
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+
+
+
+
+
+
+
+export const AuthContext = createContext(undefined);
+
+export const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        const res = await api.get<AuthResponse>('/auth/me');
+        const res = await api.get('/auth/me');
         if (res.data.success && res.data.data) {
           setCurrentUser(res.data.data.user);
           setIsAuthenticated(true);
@@ -43,17 +43,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     loadUser();
   }, []);
 
-  const login = async (data: any) => {
-    const res = await api.post<AuthResponse>('/auth/login', data);
+  const login = async (data) => {
+    const res = await api.post('/auth/login', data);
     if (res.data.success && res.data.data) {
-      localStorage.setItem('token', res.data.data.token!);
+      localStorage.setItem('token', res.data.data.token);
       setCurrentUser(res.data.data.user);
       setIsAuthenticated(true);
     }
   };
 
-  const register = async (data: any) => {
-    await api.post<AuthResponse>('/auth/register', data);
+  const register = async (data) => {
+    await api.post('/auth/register', data);
     // After register, redirect to login is handled in component
   };
 
@@ -66,6 +66,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   return (
     <AuthContext.Provider value={{ currentUser, isAuthenticated, loading, login, register, logout }}>
       {children}
-    </AuthContext.Provider>
-  );
+    </AuthContext.Provider>);
+
 };
