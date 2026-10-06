@@ -1,45 +1,88 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../services/api';
+import { ChangePlanModal } from '../components/subscription/ChangePlanModal';
+import { CancelSubscriptionModal } from '../components/subscription/CancelSubscriptionModal';
+import { SubscriptionHistory } from '../components/subscription/SubscriptionHistory';
 
 export const Subscription = () => {
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isChangePlanOpen, setIsChangePlanOpen] = useState(false);
+  const [isCancelOpen, setIsCancelOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
-  useEffect(() => {
-    const fetchSubscription = async () => {
-      try {
-        const res = await api.get('/subscriptions/me');
-        if (res.data.success) {
-          setSubscription(res.data.data);
-        }
-      } catch (err) {
-        setError('Failed to load subscription details.');
-      } finally {
-        setLoading(false);
+  const fetchSubscription = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await api.get('/subscriptions/me');
+      if (res.data.success) {
+        setSubscription(res.data.data);
       }
-    };
-    
-    fetchSubscription();
+    } catch (err) {
+      setError('Failed to load subscription details.');
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  if (loading) return <div className="text-center py-20">Loading subscription...</div>;
+  useEffect(() => {
+    fetchSubscription();
+  }, [fetchSubscription]);
+
+  const handlePlanChanged = () => {
+    setSuccessMessage('Subscription plan change requested successfully.');
+    fetchSubscription();
+    setTimeout(() => setSuccessMessage(''), 5000);
+  };
+
+  const handleCancellationRequested = () => {
+    setSuccessMessage('Cancellation requested. It will be cancelled at the end of the current billing cycle.');
+    fetchSubscription();
+    setTimeout(() => setSuccessMessage(''), 5000);
+  };
+
+  if (loading && !subscription) return <div className="text-center py-20">Loading subscription...</div>;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto bg-white shadow overflow-hidden sm:rounded-lg">
-        <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            My Subscription
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            Current plan and billing details.
-          </p>
+      <div className="max-w-3xl mx-auto bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+        <div className="px-4 py-5 sm:px-6 border-b border-gray-200 flex justify-between items-center">
+          <div>
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              My Subscription
+            </h3>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              Current plan and billing details.
+            </p>
+          </div>
+          {subscription && ['active'].includes(subscription.status) && (
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setIsChangePlanOpen(true)}
+                className="px-3 py-1.5 border border-blue-600 text-blue-600 rounded-md text-sm font-medium hover:bg-blue-50"
+              >
+                Change Plan
+              </button>
+              <button
+                onClick={() => setIsCancelOpen(true)}
+                className="px-3 py-1.5 border border-red-600 text-red-600 rounded-md text-sm font-medium hover:bg-red-50"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
         </div>
 
         {error && (
-          <div className="p-4 bg-red-50 text-red-500">
+          <div className="p-4 bg-red-50 text-red-500 text-sm">
             {error}
+          </div>
+        )}
+
+        {successMessage && (
+          <div className="p-4 bg-green-50 text-green-700 text-sm border-b border-green-200">
+            {successMessage}
           </div>
         )}
 
@@ -53,7 +96,7 @@ export const Subscription = () => {
               <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">Plan</dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {subscription.plan?.name || 'Unknown'}
+                  {subscription.plan || 'Unknown'}
                 </dd>
               </div>
               <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -93,10 +136,37 @@ export const Subscription = () => {
                   )}
                 </dd>
               </div>
+              {subscription.nextBillingAt && (
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Next Billing Date</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {new Date(subscription.nextBillingAt).toLocaleDateString()}
+                  </dd>
+                </div>
+              )}
             </dl>
           </div>
         )}
+
+        {subscription && <SubscriptionHistory />}
       </div>
+
+      {subscription && (
+        <>
+          <ChangePlanModal 
+            isOpen={isChangePlanOpen} 
+            onClose={() => setIsChangePlanOpen(false)} 
+            currentSubscription={subscription}
+            onPlanChanged={handlePlanChanged}
+          />
+          <CancelSubscriptionModal 
+            isOpen={isCancelOpen} 
+            onClose={() => setIsCancelOpen(false)} 
+            subscription={subscription}
+            onCancellationRequested={handleCancellationRequested}
+          />
+        </>
+      )}
     </div>
   );
 };

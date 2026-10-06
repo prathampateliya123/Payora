@@ -7,6 +7,7 @@ import errorHandler from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.routes.js';
 import planRoutes from './routes/plan.routes.js';
 import subscriptionRoutes from './routes/subscription.routes.js';
+import adminSubscriptionRoutes from './routes/adminSubscription.routes.js';
 import webhookRoutes from './routes/webhook.routes.js';
 
 const app = express();
@@ -28,6 +29,7 @@ app.use(morgan('dev'));
 app.use('/api/auth', authRoutes);
 app.use('/api/plans', planRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
+app.use('/api/admin/subscriptions', adminSubscriptionRoutes);
 
 // Health Check Route
 app.get('/api/health', (req, res) => {
