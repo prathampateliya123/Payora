@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import { getPlans } from '../services/app.service';
 import { useAuth } from '../hooks/useAuth';
 
 export const Pricing = () => {
@@ -15,9 +15,9 @@ export const Pricing = () => {
   useEffect(() => {
     const fetchPlans = async () => {
       try {
-        const res = await api.get('/plans');
-        if (res.data.success) {
-          setPlans(res.data.data);
+        const res = await getPlans();
+        if (res.success) {
+          setPlans(res.data);
         }
       } catch (err) {
         console.error('Failed to fetch plans', err);
@@ -132,14 +132,23 @@ export const Pricing = () => {
             <div key={plan._id} className="bg-white rounded-lg shadow-sm divide-y divide-gray-200 border border-gray-200">
               <div className="p-6">
                 <h3 className="text-2xl font-semibold text-gray-900">{plan.name}</h3>
-                <p className="mt-4">
+                <p className="mt-2 text-sm text-gray-500">{plan.description}</p>
+                <p className="mt-4 mb-4">
                   <span className="text-4xl font-extrabold text-gray-900">₹{plan.monthlyPrice}</span>
                   <span className="text-base font-medium text-gray-500">/mo</span>
                 </p>
+                <ul className="space-y-3 mb-6">
+                  {plan.features?.map((feature, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <span className="text-blue-500 mr-2">✓</span>
+                      <span className="text-sm text-gray-600">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
                 <button
                   onClick={() => handleSubscribe(plan)}
                   disabled={subscribing}
-                  className="mt-8 block w-full bg-blue-600 border border-transparent rounded-md py-2 text-sm font-semibold text-white text-center hover:bg-blue-700 disabled:opacity-50"
+                  className="block w-full bg-blue-600 border border-transparent rounded-md py-2 text-sm font-semibold text-white text-center hover:bg-blue-700 disabled:opacity-50"
                 >
                   {plan.name === 'FREE' ? 'Get Started' : (subscribing ? 'Creating subscription...' : 'Subscribe')}
                 </button>

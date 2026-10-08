@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import api from '../services/api';
+import { getMySubscription } from '../services/app.service';
 import { ChangePlanModal } from '../components/subscription/ChangePlanModal';
 import { CancelSubscriptionModal } from '../components/subscription/CancelSubscriptionModal';
 import { SubscriptionHistory } from '../components/subscription/SubscriptionHistory';
@@ -15,9 +15,9 @@ export const Subscription = () => {
   const fetchSubscription = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await api.get('/subscriptions/me');
-      if (res.data.success) {
-        setSubscription(res.data.data);
+      const res = await getMySubscription();
+      if (res.success) {
+        setSubscription(res.data);
       }
     } catch (err) {
       setError('Failed to load subscription details.');

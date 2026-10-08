@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../../services/api';
+import { getSubscriptionHistory } from '../../services/app.service';
 
 export const SubscriptionHistory = () => {
   const [history, setHistory] = useState([]);
@@ -8,9 +8,9 @@ export const SubscriptionHistory = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await api.get('/subscriptions/history');
-        if (res.data.success) {
-          setHistory(res.data.data);
+        const res = await getSubscriptionHistory();
+        if (res.success) {
+          setHistory(res.data);
         }
       } catch (err) {
         console.error('Failed to fetch history', err);

@@ -11,7 +11,7 @@ export const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">SubFlow</h1>
+              <h1 className="text-xl font-bold text-gray-900">Payora</h1>
             </div>
             <div className="flex items-center">
               <button
@@ -66,20 +66,41 @@ export const Dashboard = () => {
           </div>
         </div>
 
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow px-5 py-6">
+            <dt className="text-sm font-medium text-gray-500 truncate">Current Plan</dt>
+            <dd className="mt-1 text-2xl font-semibold text-gray-900">PRO</dd>
+          </div>
+          <div className="bg-white rounded-lg shadow px-5 py-6">
+            <dt className="text-sm font-medium text-gray-500 truncate">Status</dt>
+            <dd className="mt-1 text-2xl font-semibold text-green-600">Active</dd>
+          </div>
+          <div className="bg-white rounded-lg shadow px-5 py-6">
+            <dt className="text-sm font-medium text-gray-500 truncate">Next Billing</dt>
+            <dd className="mt-1 text-2xl font-semibold text-gray-900">15 Oct 2026</dd>
+          </div>
+          <div className="bg-white rounded-lg shadow px-5 py-6">
+            <dt className="text-sm font-medium text-gray-500 truncate">Total Paid</dt>
+            <dd className="mt-1 text-2xl font-semibold text-gray-900">₹2,990</dd>
+          </div>
+        </div>
+
         {/* Future Subscription Section */}
         <div className="mt-8 bg-white shadow rounded-lg overflow-hidden">
           <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
             <div>
               <h3 className="text-lg leading-6 font-medium text-gray-900">
-                Subscription
+                Subscription & Billing
               </h3>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                Manage your billing and plans.
+                Manage your billing, view invoices and transaction history.
               </p>
             </div>
-            <div>
-              <a href="/pricing" className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700">View Plans</a>
-              <a href="/subscription" className="ml-3 text-blue-600 border border-blue-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-50">My Subscription</a>
+            <div className="flex space-x-3">
+              <a href="/pricing" className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Plans</a>
+              <a href="/subscription" className="text-blue-600 border border-blue-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-50">Subscription</a>
+              <a href="/billing" className="text-gray-700 border border-gray-300 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50">Invoices</a>
+              <a href="/transactions" className="text-gray-700 border border-gray-300 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50">Transactions</a>
             </div>
           </div>
         </div>
